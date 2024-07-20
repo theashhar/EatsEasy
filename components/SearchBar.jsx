@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // You can use any icon library
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
@@ -14,14 +14,13 @@ const SearchBar = ({ placeholder = 'Search...' }) => {
         alignItems: 'center',
         backgroundColor: Colors[colorScheme ?? 'light'].lighterColor,
         borderRadius: 8,
-        // paddingHorizontal: 10,
-        padding: 20,
-        marginVertical: 10,
+        padding: 17,
         borderColor:'black',
         margin:10,
-        borderRadius:40
+        borderRadius:40,
+        elevation:1
       }}>
-      <Ionicons name="search" size={20} color="#aaa" style={styles.icon} />
+      <Ionicons name="search" size={20} color="#aaa" style={{marginRight: 10}} />
       <TextInput
         style={{
             color:Colors[colorScheme ?? 'light'].invertColor,
@@ -35,14 +34,5 @@ const SearchBar = ({ placeholder = 'Search...' }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  icon: {
-    marginRight: 10,
-  },
-  input: {
-
-  },
-});
 
 export default SearchBar;

@@ -9,10 +9,11 @@ const black = '#000000'
 const grey = '#1F1F1F'
 const white = '#FFFFFF'
 const offWhite = '#F7F7F7'
-const moreOffWhite= '#C9C9C9'
+const moreOffWhite= '#A19F9F'
 
 export const Colors = {
   light: {
+    boxColor: white,
     deepColor: white,
     lighterColor: offWhite,
     invertColor: black,
@@ -26,6 +27,7 @@ export const Colors = {
     tabIconSelected: tintColorLight,
   },
   dark: {
+    boxColor: grey,
     deepColor: black,
     lighterColor: grey,
     invertColor: white,
