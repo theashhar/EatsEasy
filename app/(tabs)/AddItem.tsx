@@ -18,7 +18,7 @@ import * as ImagePicker from 'expo-image-picker';
 // import SubmitButton from './SubmitButton';
 // import { addDoc, collection } from 'firebase/firestore';
 
-export default function NewSubmission (
+export default function AddItem (
   // {documentData, setDocumentData,
   // teamName, setTeamName,
   // ideaDescription, setIdeaDescription,
@@ -26,74 +26,34 @@ export default function NewSubmission (
   // currentUser, setCurrentUser}
 ) {
   const colorScheme = useColorScheme();
-
-
-
+  const [imageURI, setImageURI] = useState('')
+  const [imageName, setImageName] = useState('')
+  const pickImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'Sorry, we need camera roll permissions to make this work!');
+        return;
+      }
   
-    // const [docRefID, setDocRefID] = useState(null)
-    // const pickDocument = async () => {  
-    //   try {
-    //     const result = await DocumentPicker.getDocumentAsync({
-    //       type: ['application/pdf',
-    //       //  'application/pptx', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-    //       ]   
-    //     })
-    //     if (!result.canceled && result !== null){
-    //       setDocumentData(result)
-    //       console.log(result)
-    //       // console.log(result.assets[0].name)
-    //     }
-    //   } catch (error) {
-    //     console.log('Error picking document:', error)
-    //     Alert.alert('An error occurred while picking the document.')
-    //   }
-    // };
-
-    // const uploadPDF = async () => {
-    //   try {
-    //     if (!allFieldsCheck()) {
-    //       Alert.alert('Please fill all fields before submitting.');
-    //       return;
-    //     }
-    //     const currentUserEmail = currentUser ? currentUser.email : 'Loading...'
-    //     const userName = currentUser ? currentUser.displayName : 'Loading...'
-    //     const documentPath = `IdeaDoc/${currentUserEmail}/${teamName.trim()}(${docRef}) - ${documentData.assets[0].name}`;
-    //     const response = await fetch(documentData.assets[0].uri);
-    //     const blob = await response.blob();
-    //     const storageReference = ref(storage, documentPath);
-    //     await uploadBytes(storageReference, blob);
-    //     const downloadURL = await getDownloadURL(storageReference);
-    //     console.log('URL at: ', downloadURL);
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+        
+      });
   
-    //       const docRef = await addDoc(collection(FIREBASE_DB, `${userName.trim()} - ${currentUserEmail}`), {
-    //         userName,
-    //         currentUserEmail,
-    //         teamName,
-    //         categoryChecked,
-    //         ideaDescription,
-    //         downloadURL,
-    //         fileTitle: documentData.assets[0].name
-    //       }).then((docRef) => {
-    //         setDocRefID(docRef.id);
-    //         console.log(docRef.id);
-            
-    //         Alert.alert('PDF uploaded successfully!');
-    //         console.log('PDF uploaded successfully!');
-    //       })
-    //       // var documentPath = `IdeaDoc/${currentUserEmail}/${teamName.trim()}(${docRef}) - ${documentData.assets[0].name}`;
-    //   } catch (error) {
-    //     console.error('Error uploading PDF: ', error);
-    //   }
-    // }
-  
-    // const allFieldsCheck = () => {
-    //   return Boolean(
-    //     teamName &&
-    //     categoryChecked &&
-    //     ideaDescription &&
-    //     documentData 
-    //   )
-    // }
+      if (!result.canceled && result !== null) {
+        console.log(result);
+        setImageURI(result.assets[0].uri)
+        // setImageName(result.assets[0].fileName)
+        console.log(imageURI, '=>', imageName);
+      }
+    } catch (error) {
+      console.error('Error picking image', error);
+    }
+  };
 
     return(
       <SafeAreaView style={{margin:15}} >
@@ -105,7 +65,7 @@ export default function NewSubmission (
 
         <ThemedText type='subtitle' style={ideaSubmissionStyle.questionText}>Enter Item Name</ThemedText>
         <TextInput 
-        style={ideaSubmissionStyle.input}
+        style={[ideaSubmissionStyle.input, {backgroundColor:Colors[colorScheme ?? 'light'].boxColor}]}
         placeholder="Example: Lasagna Pasta"
         placeholderTextColor='#b2b4b8'
         // onChangeText={(text) => setTeamName(text)}
@@ -113,7 +73,7 @@ export default function NewSubmission (
         />
         <ThemedText type='subtitle' style={ideaSubmissionStyle.questionText}>Enter Item Category</ThemedText>
         <TextInput 
-        style={ideaSubmissionStyle.input}
+        style={[ideaSubmissionStyle.input, {backgroundColor:Colors[colorScheme ?? 'light'].boxColor}]}
         placeholder="Example: Italian"
         placeholderTextColor='#b2b4b8'
         // onChangeText={(text) => setTeamName(text)}
@@ -121,26 +81,28 @@ export default function NewSubmission (
         />
         <ThemedText type='subtitle' style={ideaSubmissionStyle.questionText}>Set Price</ThemedText>
         <TextInput 
-        style={ideaSubmissionStyle.input}
+        style={[ideaSubmissionStyle.input, {backgroundColor:Colors[colorScheme ?? 'light'].boxColor}]}
         placeholder="Example: 389"
         placeholderTextColor='#b2b4b8'
         // onChangeText={(text) => setTeamName(text)}
         // value={teamName}
         />
   
-        <ThemedText type='subtitle' style={ideaSubmissionStyle.questionText}>Upload PPT/PDF</ThemedText>
+        <ThemedText type='subtitle' style={ideaSubmissionStyle.questionText}>Upload Food Image</ThemedText>
         <TouchableOpacity 
-          // onPress={()=>  pickImage()}
-          style= {[ideaSubmissionStyle.uploadSection,
-          // {backgroundColor : documentData ? '#C9D9FF' : 'white'}
-          {backgroundColor : 'white'}
-          ]}
+          onPress={()=>  pickImage()}
+          style={[ideaSubmissionStyle.uploadSection, {
+            borderColor:Colors[colorScheme ?? 'light'].lighterInvert,
+            backgroundColor:imageURI? Colors[colorScheme ?? 'light'].mainLight : Colors[colorScheme ?? 'light'].boxColor
+            // backgroundColor: imageURI ? '#C9D9FF' : Colors[colorScheme ?? 'light'].boxColor
+
+            }]}
            >
-          <MaterialIcons style={{ borderStyle: 'dashed', borderColor:'#263E65', borderWidth:1, padding:5, paddingLeft:7, margin:8, borderRadius:20 }} name='upload-file' color='#263E65' size={30} />
+          <MaterialIcons style={{ borderStyle: 'dashed', borderColor: Colors[colorScheme ?? 'light'].lighterInvert, borderWidth:1, padding:5, paddingLeft:7, margin:8, borderRadius:20 }} name='upload-file' color={Colors[colorScheme ?? 'light'].lighterInvert } size={30} />
           <ThemedText type='mini'>'Upload the image here'</ThemedText>
         </TouchableOpacity>
         <View style={{justifyContent:'center', flexDirection:'row', }}>
-        <MaterialIcons name='security'  size={14} />
+        <MaterialIcons name='security'  size={14} color={Colors[colorScheme ?? 'light'].lighterInvert} />
           <ThemedText type='mini' > Your data is securely handled.</ThemedText>
           {/* <Text style= {{ fontSize:10, }}></Text> */}
         </View>
@@ -173,7 +135,7 @@ export default function NewSubmission (
         justifyContent:'center',  
     },
     input: {
-        backgroundColor:'white',
+        // backgroundColor:'white',
         elevation:1,
         borderRadius:30,
         padding: 15,
@@ -184,13 +146,13 @@ export default function NewSubmission (
       borderRadius: 18,
       justifyContent:'center',
       alignItems:'center',
-      backgroundColor: 'white',
+      // backgroundColor: 'white',
       marginHorizontal:6,
       padding:4,
       width: '96%', 
       height: 120,  
       borderStyle: 'dashed',
-      borderColor:'#263E65',
+      // borderColor:'#263E65',
       borderWidth:1.3,
       marginVertical: 14,
       // backgroundColor:'#C9D9FF',

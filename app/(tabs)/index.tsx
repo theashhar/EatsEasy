@@ -43,6 +43,7 @@ const itemDetail = [
 ];
 
 export default function HomeScreen() {
+  const numColumns = 2
   return (
     <SafeAreaView style={{marginBottom:80}}>
       <MyHeader />
@@ -54,7 +55,8 @@ export default function HomeScreen() {
         </View>
         <SearchBar />
         <ThemedText  style={styles.margin} type="defaultSemiBold">Food Listing</ThemedText>
-        <FlatList 
+        <FlatList
+          key={numColumns}
           scrollEnabled={false}
           data={itemDetail}
           keyExtractor={(item) => item.title}
@@ -66,6 +68,7 @@ export default function HomeScreen() {
               price={item.price}
             />
           )}
+          numColumns={numColumns}
           contentContainerStyle={styles.listContainer}
         />
         <View style={{marginVertical:36}}>
@@ -82,10 +85,8 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     width:'100%',
-    paddingHorizontal: 15,
     flex: 1,
-    flexDirection:'row',
-    justifyContent:'center',
-    flexWrap:'wrap'
+    alignItems:'center'
+
   },
 });
