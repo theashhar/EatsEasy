@@ -7,7 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 
-export default function ManageItemCard () {
+export default function ManageItemCard ({title, category, img, price}) {
     const colorScheme = useColorScheme();
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -26,7 +26,7 @@ export default function ManageItemCard () {
                 backgroundColor: Colors[colorScheme ?? 'light'].boxColor,
             }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={require('../assets/images/burger.jpg')} 
+                <Image src={img} 
                     style={{
                         width:80,
                         height: 80,
@@ -37,9 +37,9 @@ export default function ManageItemCard () {
                         borderColor: Colors[colorScheme ?? 'light'].invertColor,
                 }} />
                 <View style={{ width: '60%'}}>
-                  <ThemedText type='defaultSemiBold' style={{ margin:8, marginBottom:0 }}>Margharita</ThemedText>
-                  <ThemedText type='mini' style={{ marginHorizontal: 8,paddingVertical:0, color: Colors[colorScheme ?? 'light'].lighterInvert }}>Pizza</ThemedText>
-                  <ThemedText type='subtitle' style={{ margin: 8 }}>Rs 280</ThemedText>
+                  <ThemedText type='defaultSemiBold' style={{ margin:8, marginBottom:0 }}>{title}</ThemedText>
+                  <ThemedText type='mini' style={{ marginHorizontal: 8,paddingVertical:0, color: Colors[colorScheme ?? 'light'].lighterInvert }}>{category}</ThemedText>
+                  <ThemedText type='subtitle' style={{ margin: 8 }}>{price}</ThemedText>
                 </View>
             </View>
             <Pressable style={{

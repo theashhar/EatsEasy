@@ -15,7 +15,6 @@ return (
         borderRadius: 10,
         borderColor: 'white',
         backgroundColor: Colors[colorScheme ?? 'light'].boxColor,
-        // backgroundColor: '#ffe6b2',
         marginHorizontal:12,
         elevation:2,
         position:'relative',
@@ -26,7 +25,7 @@ return (
             margin:10,
             backgroundColor: 'white',
         }}>
-            <Image source={img} 
+            <Image src={img} 
                 style={{
                     width:'100%',
                     height: 120,

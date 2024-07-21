@@ -28,7 +28,7 @@ export default function AddItem() {
       }
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
+        allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
       });
@@ -99,15 +99,14 @@ export default function AddItem() {
       <ScrollView>
         <ThemedText type='subtitle' style={styles.questionText}>Enter Item Name</ThemedText>
         <TextInput 
-          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor }]}
-          placeholder="Example: Lasagna Pasta"
+          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor}]}          placeholder="Example: Lasagna Pasta"
           placeholderTextColor='#b2b4b8'
           onChangeText={(text) => setItemName(text)}
           value={itemName}
         />
         <ThemedText type='subtitle' style={styles.questionText}>Enter Item Category</ThemedText>
         <TextInput 
-          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor }]}
+          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor}]}
           placeholder="Example: Italian"
           placeholderTextColor='#b2b4b8'
           onChangeText={(text) => setCategory(text)}
@@ -115,8 +114,9 @@ export default function AddItem() {
         />
         <ThemedText type='subtitle' style={styles.questionText}>Set Price</ThemedText>
         <TextInput 
-          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor }]}
+          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor}]}
           placeholder="Example: 389"
+          keyboardType = 'numeric'
           placeholderTextColor='#b2b4b8'
           onChangeText={(text) => setPrice(text)}
           value={price}
