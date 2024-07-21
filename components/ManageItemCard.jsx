@@ -19,7 +19,7 @@ export default function ManageItemCard () {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                width: '95%',
+                width: '100%',
                 alignSelf: 'center',
                 borderRadius: 15,
                 elevation: 2,
@@ -59,7 +59,7 @@ export default function ManageItemCard () {
                     position:'absolute',
                     right:2,
                     bottom:0,}}
-                trackColor={{false: '#767577', true: Colors[colorScheme ?? 'light'].invertColor}}
+                trackColor={{false: Colors.dark.lighterInvert, true: Colors[colorScheme ?? 'light'].invertColor}}
                 thumbColor={isEnabled ? Colors.dark.mainColor : '#f4f3f4'}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}

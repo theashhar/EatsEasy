@@ -57,12 +57,8 @@ export default function AddItem (
 
     return(
       <SafeAreaView style={{margin:15}} >
+        <ThemedText type='defaultSemiBold' style={{alignSelf:'center', paddingHorizontal:18, paddingVertical:8, borderRadius:30, marginBottom:10, backgroundColor:Colors.dark.mainLight}}>Add Item</ThemedText>
         <ScrollView>
-
-          {/* <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            > */}
-
         <ThemedText type='subtitle' style={ideaSubmissionStyle.questionText}>Enter Item Name</ThemedText>
         <TextInput 
         style={[ideaSubmissionStyle.input, {backgroundColor:Colors[colorScheme ?? 'light'].boxColor}]}
