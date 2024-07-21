@@ -41,16 +41,13 @@ return (
                 <ThemedText type='mini' style= {{
                 alignSelf:'start',
                 marginHorizontal:5,
-                paddingBottom:10,
+                marginBottom:5,
                 color: Colors[colorScheme ?? 'light'].lighterInvert
             }}>  {category}</ThemedText>
 
-                <ThemedText  style= {{
-                alignSelf:'start',
-                fontWeight: 'bold',
-                marginHorizontal:8,
-                paddingBottom:6,
-                fontSize: 14
+                <ThemedText type='subtitle'  style= {{
+                margin:6,
+                // paddingBottom:6,
             }}> Rs {price}</ThemedText>
                   <MaterialIcons style={{
                     position: 'absolute',

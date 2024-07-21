@@ -98,8 +98,8 @@ export default function AddItem (
 
             }]}
            >
-          <MaterialIcons style={{ borderStyle: 'dashed', borderColor: Colors[colorScheme ?? 'light'].lighterInvert, borderWidth:1, padding:5, paddingLeft:7, margin:8, borderRadius:20 }} name='upload-file' color={Colors[colorScheme ?? 'light'].lighterInvert } size={30} />
-          <ThemedText type='mini'>'Upload the image here'</ThemedText>
+          <MaterialIcons name='add-photo-alternate' color={Colors[colorScheme ?? 'light'].lighterInvert } size={30} />
+          <ThemedText style={{color:Colors[colorScheme ?? 'light'].lighterInvert}} type='mini'>"Upload the image here"</ThemedText>
         </TouchableOpacity>
         <View style={{justifyContent:'center', flexDirection:'row', }}>
         <MaterialIcons name='security'  size={14} color={Colors[colorScheme ?? 'light'].lighterInvert} />
