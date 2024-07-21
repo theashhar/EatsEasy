@@ -1,8 +1,4 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, View, Text, ScrollView, FlatList } from 'react-native';
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { StyleSheet, Image, View, Text, ScrollView, FlatList } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,39 +7,40 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useEffect, useState } from 'react';
 import { FIREBASE_DB } from '../../FirebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export default function Manage() {
   const colorScheme = useColorScheme();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(FIREBASE_DB, 'FoodItems'));
-        const fetchedItems = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setItems(fetchedItems);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
+    const unsubscribe = onSnapshot(collection(FIREBASE_DB, 'FoodItems'), (querySnapshot) => {
+      const fetchedItems = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setItems(fetchedItems);
+    }, (error) => {
+      console.error('Error fetching data: ', error);
+    });
 
-    fetchData();
-  }, [items]);
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   return (
-    <SafeAreaView style={{margin:15}}>
-      <ThemedText type='defaultSemiBold' style={{ alignSelf: 'center', paddingHorizontal: 18, paddingVertical: 8, borderRadius: 30, marginBottom: 10, backgroundColor: Colors[colorScheme ?? 'light'].mainLight }}>Manage Items</ThemedText>
+    <SafeAreaView style={{ margin: 15 }}>
+      <ThemedText type='defaultSemiBold' style={{ alignSelf: 'center', paddingHorizontal: 18, paddingVertical: 8, borderRadius: 30, marginBottom: 10, backgroundColor: Colors[colorScheme ?? 'light'].mainLight }}>
+        Manage Items
+      </ThemedText>
       <ScrollView>
-      <FlatList
+        <FlatList
           scrollEnabled={false}
           data={items}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <ManageItemCard
+            id={item.id}
               title={item.itemName}
               category={item.itemCategory}
               img={item.imageURL}
@@ -51,7 +48,7 @@ export default function Manage() {
             />
           )}
         />
-
+        <View style={{ marginVertical: 64 }}></View>
       </ScrollView>
     </SafeAreaView>
   );

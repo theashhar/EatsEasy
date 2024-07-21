@@ -6,28 +6,41 @@ import MyHeader from '../../components/MyHeader';
 import SearchBar from '../../components/SearchBar';
 import ItemCard from '../../components/ItemCard';
 import { FIREBASE_DB } from '../../FirebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot, getDoc } from 'firebase/firestore';
 
 export default function HomeScreen() {
   const [items, setItems] = useState([]);
   const numColumns = 2;
-
+  //better Method
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(FIREBASE_DB, 'FoodItems'));
-        const fetchedItems = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setItems(fetchedItems);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
+    const unsubscribe = onSnapshot(collection(FIREBASE_DB, 'FoodItems'), (querySnapshot) => {
+      const fetchedItems = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setItems(fetchedItems);
+    }, (error) => {
+      console.error('Error fetching data: ', error);
+    });
 
-    fetchData();
-  }, [items]);
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(collection(FIREBASE_DB, 'FoodItems'), (querySnapshot) => {
+  //     const fetchedItems = querySnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }));
+  //     setItems(fetchedItems);
+  //   }, (error) => {
+  //     console.error('Error fetching data: ', error);
+  //   });
+
+  //   // Clean up the listener when the component unmounts
+  //   return () => unsubscribe();
+  // }, []);
 
   return (
     <SafeAreaView style={{ marginBottom: 80 }}>
