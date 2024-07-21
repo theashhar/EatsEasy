@@ -48,9 +48,12 @@ export default function AddItem() {
       Alert.alert('No Image Selected', 'Please select an image before uploading.');
       return;
     }
-
     try {
-      const documentPath = `FoodItems/${new Date().getTime()}`;
+      // const documentPath = `FoodItems/${new Date().getTime()}`;
+
+          // Generate a unique ID for the document
+      const documentID = new Date().getTime().toString();
+      const documentPath = `FoodItems/${documentID}`;  // Use document ID for the file name
       const response = await fetch(imageURI);
       const blob = await response.blob();
       const storageReference = ref(FIREBASE_STORAGE, documentPath);
@@ -74,6 +77,8 @@ export default function AddItem() {
             itemName: itemName, 
             itemCategory: category, 
             price: price, 
+            imageFileName: documentID  // Store the document ID for later reference
+
           });
 
           Alert.alert('Item Added', 'The Item has been uploaded successfully.');

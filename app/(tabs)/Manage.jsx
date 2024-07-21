@@ -45,6 +45,7 @@ export default function Manage() {
               category={item.itemCategory}
               img={item.imageURL}
               price={item.price}
+              imageFileName={item.imageFileName}
             />
           )}
         />

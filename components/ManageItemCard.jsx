@@ -6,22 +6,33 @@ import { Colors } from '@/constants/Colors';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { doc, deleteDoc } from 'firebase/firestore';
-import { FIREBASE_DB } from '../FirebaseConfig'; 
+import { ref, deleteObject } from 'firebase/storage';
+import { FIREBASE_DB, FIREBASE_STORAGE } from '../FirebaseConfig'; 
 
-export default function ManageItemCard({ id, title, category, img, price }) {
+export default function ManageItemCard({ id, title, category, img, price, imageFileName }) {
     const colorScheme = useColorScheme();
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     const handleDelete = async () => {
         try {
+            // Delete the Firestore document
             await deleteDoc(doc(FIREBASE_DB, 'FoodItems', id));
-            alert('Item deleted successfully');
+            
+            // Extract image path from URL
+            const imageRef = ref(FIREBASE_STORAGE, `FoodItems/${imageFileName}`);
+            
+            // Delete the image from Firebase Storage
+            // error item ID and name not matching from fb storage
+            await deleteObject(imageRef);
+            
+            alert('Item and image deleted successfully');
         } catch (error) {
-            console.error('Error deleting item: ', error);
-            alert('Failed to delete item');
+            console.error('Error deleting item or image: ', error);
+            alert('Failed to delete item or image');
         }
     };
+    console.log('Image file name:', imageFileName);
 
     return (
         <ThemedView
