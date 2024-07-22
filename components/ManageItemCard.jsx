@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Pressable, Switch, Alert } from 'react-native';
+import { View, Image, Pressable, Switch, Alert, ToastAndroid } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
@@ -8,7 +8,6 @@ import { ThemedView } from './ThemedView';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { FIREBASE_DB, FIREBASE_STORAGE } from '../FirebaseConfig';
 import { ref, deleteObject } from 'firebase/storage';
-
 
 export default function ManageItemCard({ id, title, category, img, price, imageFileName, visible }) {
     const colorScheme = useColorScheme();
@@ -40,10 +39,10 @@ export default function ManageItemCard({ id, title, category, img, price, imageF
                             await deleteDoc(doc(FIREBASE_DB, 'FoodItems', id));
                             const imageRef = ref(FIREBASE_STORAGE, `FoodItems/${imageFileName}`);
                             await deleteObject(imageRef);
-                            alert('Item and image deleted successfully');
+                            ToastAndroid.show('Item and image deleted successfully', ToastAndroid.SHORT);
                         } catch (error) {
                             console.error('Error deleting item or image: ', error);
-                            alert('Failed to delete item or image');
+                            ToastAndroid.show('Failed to delete item or image', ToastAndroid.SHORT);
                         }
                     },
                 },

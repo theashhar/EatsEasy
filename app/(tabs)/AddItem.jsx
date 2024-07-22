@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, Alert, ScrollView, StyleSheet, TextInput, ProgressBarAndroid } from 'react-native';
+import { Text, View, TouchableOpacity, ToastAndroid, Alert, ScrollView, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons'; // You can use any icon library
+import { MaterialIcons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection } from 'firebase/firestore';
-import { FIREBASE_STORAGE, FIREBASE_DB } from '../../FirebaseConfig'; 
+import { FIREBASE_STORAGE, FIREBASE_DB } from '../../FirebaseConfig';
 
 export default function AddItem() {
   const colorScheme = useColorScheme();
@@ -16,14 +16,14 @@ export default function AddItem() {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
   const [imageURI, setImageURI] = useState('');
-  const [uploadProgress, setUploadProgress] = useState('');
-  const [imageName, setImageName] = useState('"Upload Image"');
+  const [uploadProgress, setUploadProgress] = useState(0); // changed to number
+  const [imageName, setImageName] = useState('Upload Image');
 
   const pickImage = async () => {
     try {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Permission Denied', 'Sorry, we need camera roll permissions to make this work!');
+        ToastAndroid.show('Camera Permission Denied: Enable Camera Permissions', ToastAndroid.SHORT);
         return;
       }
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -44,58 +44,53 @@ export default function AddItem() {
   };
 
   const upload = async () => {
-    if (!imageURI) {
-      Alert.alert('No Image Selected', 'Please select an image before uploading.');
+  // Validation
+    if (!itemName.trim() || !category.trim() || !price.trim() || !imageURI) {
+      ToastAndroid.show('Please fill all fields and select an image.', ToastAndroid.SHORT);
       return;
     }
     try {
-      // const documentPath = `FoodItems/${new Date().getTime()}`;
-
-          // Generate a unique ID for the document
       const documentID = new Date().getTime().toString();
-      const documentPath = `FoodItems/${documentID}`;  // Use document ID for the file name
+      const documentPath = `FoodItems/${documentID}`;
       const response = await fetch(imageURI);
       const blob = await response.blob();
       const storageReference = ref(FIREBASE_STORAGE, documentPath);
       const uploadTask = uploadBytesResumable(storageReference, blob);
 
-      uploadTask.on('state_changed', 
+      uploadTask.on('state_changed',
         (snapshot) => {
-          const progress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+          const progress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           setUploadProgress(progress);
-        }, 
+        },
         (error) => {
           console.error('Error uploading image:', error);
-          Alert.alert('Upload Failed', 'There was an error uploading the image. Please try again.');
-        }, 
+          ToastAndroid.show('Error: Upload Failed: Please try again.', ToastAndroid.SHORT);
+        },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
           console.log('Image available at:', downloadURL);
 
           await addDoc(collection(FIREBASE_DB, 'FoodItems'), {
             imageURL: downloadURL,
-            itemName: itemName, 
-            itemCategory: category, 
-            price: price, 
-            imageFileName: documentID,  // Store the document ID for later reference
-            visible: true // new property
-
+            itemName: itemName,
+            itemCategory: category,
+            price: price,
+            imageFileName: documentID,
+            visible: true
           });
 
-          Alert.alert('Item Added', 'The Item has been uploaded successfully.');
-          // Reset fields after upload
-          setItemName('')
-          setCategory('')
-          setPrice('')
-          setUploadProgress('')
-          setImageURI('')
-          setImageName('"Upload Image"')
-          
+          ToastAndroid.show('Item Added Successfully.', ToastAndroid.SHORT);
+          setItemName('');
+          setCategory('');
+          setPrice('');
+          setUploadProgress(0); // reset to 0
+          setImageURI('');
+          setImageName('Upload Image');
         }
       );
     } catch (error) {
       console.error('Error uploading image:', error);
-      Alert.alert('Upload Failed', 'There was an error uploading the image. Please try again.');
+      ToastAndroid.show('Error: Upload Failed: Please try again.', ToastAndroid.SHORT);
     }
   };
 
@@ -104,32 +99,32 @@ export default function AddItem() {
       <ThemedText type='defaultSemiBold' style={{ alignSelf: 'center', paddingHorizontal: 18, paddingVertical: 8, borderRadius: 30, marginBottom: 10, backgroundColor: Colors[colorScheme ?? 'light'].mainLight }}>Add Item</ThemedText>
       <ScrollView>
         <ThemedText type='subtitle' style={styles.questionText}>Enter Item Name</ThemedText>
-        <TextInput 
-          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor}]}          placeholder="Example: Lasagna Pasta"
+        <TextInput
+          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor }]}
+          placeholder="Example: Lasagna Pasta"
           placeholderTextColor='#b2b4b8'
           onChangeText={(text) => setItemName(text)}
           value={itemName}
         />
         <ThemedText type='subtitle' style={styles.questionText}>Enter Item Category</ThemedText>
-        <TextInput 
-          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor}]}
+        <TextInput
+          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor }]}
           placeholder="Example: Italian"
           placeholderTextColor='#b2b4b8'
           onChangeText={(text) => setCategory(text)}
           value={category}
         />
         <ThemedText type='subtitle' style={styles.questionText}>Set Price</ThemedText>
-        <TextInput 
-          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor}]}
+        <TextInput
+          style={[styles.input, { backgroundColor: Colors[colorScheme ?? 'light'].boxColor, color: Colors[colorScheme ?? 'light'].invertColor }]}
           placeholder="Example: 389"
-          keyboardType = 'numeric'
+          keyboardType='numeric'
           placeholderTextColor='#b2b4b8'
           onChangeText={(text) => setPrice(text)}
           value={price}
         />
-  
         <ThemedText type='subtitle' style={styles.questionText}>Upload Food Image</ThemedText>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={pickImage}
           style={[styles.uploadSection, {
             borderColor: Colors[colorScheme ?? 'light'].lighterInvert,
@@ -138,24 +133,23 @@ export default function AddItem() {
         >
           <MaterialIcons name='add-photo-alternate' color={Colors[colorScheme ?? 'light'].lighterInvert} size={30} />
           <ThemedText style={{ color: Colors[colorScheme ?? 'light'].lighterInvert }} type='mini'>{imageName}</ThemedText>
-          {uploadProgress !== '' && (
-            <ThemedText style={{ color: Colors[colorScheme ?? 'light'].lighterInvert, marginTop:10 }} type='mini'>Uploading... {uploadProgress}%</ThemedText>
+          {uploadProgress > 0 && (
+            <ThemedText style={{ color: Colors[colorScheme ?? 'light'].lighterInvert, marginTop: 10 }} type='mini'>Uploading... {uploadProgress}%</ThemedText>
           )}
-          <ProgressBarAndroid
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={uploadProgress/100}
-          color={Colors[colorScheme ?? 'light'].mainColor}
-        />
+          <ActivityIndicator
+            style={{ marginTop: 10 }}
+            size="small"
+            color={Colors[colorScheme ?? 'light'].mainColor}
+            animating={uploadProgress > 0}
+          />
         </TouchableOpacity>
         <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
           <MaterialIcons name='security' size={14} color={Colors[colorScheme ?? 'light'].lighterInvert} />
           <ThemedText type='mini'> Your data is securely handled.</ThemedText>
         </View>
-  
         <TouchableOpacity onPress={upload}>
-          <View style={{ width: '90%',borderWidth:0.7, borderColor: Colors[colorScheme ?? 'light'].invertColor, backgroundColor: Colors[colorScheme ?? 'light'].lighterColor, height: 50, borderRadius: 28, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginVertical: 30, elevation: 5 }}>
-            <ThemedText style={{ fontWeight: 'bold', fontSize: 18,  }}>Upload</ThemedText>
+          <View style={{ width: '90%', borderWidth: 0.7, borderColor: Colors[colorScheme ?? 'light'].invertColor, backgroundColor: Colors[colorScheme ?? 'light'].lighterColor, height: 50, borderRadius: 28, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginVertical: 30, elevation: 5 }}>
+            <ThemedText style={{ fontWeight: 'bold', fontSize: 18 }}>Upload</ThemedText>
           </View>
         </TouchableOpacity>
       </ScrollView>
@@ -180,8 +174,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 6,
     padding: 4,
-    width: '96%', 
-    height: 120,  
+    width: '96%',
+    height: 120,
     borderStyle: 'dashed',
     borderWidth: 1.3,
     marginVertical: 14,
