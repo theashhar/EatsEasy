@@ -77,7 +77,8 @@ export default function AddItem() {
             itemName: itemName, 
             itemCategory: category, 
             price: price, 
-            imageFileName: documentID  // Store the document ID for later reference
+            imageFileName: documentID,  // Store the document ID for later reference
+            visible: true // new property
 
           });
 
@@ -153,8 +154,8 @@ export default function AddItem() {
         </View>
   
         <TouchableOpacity onPress={upload}>
-          <View style={{ width: '90%', backgroundColor: Colors.dark.mainColor, height: 50, borderRadius: 28, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginVertical: 30, elevation: 5 }}>
-            <ThemedText style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>Upload</ThemedText>
+          <View style={{ width: '90%',borderWidth:0.7, borderColor: Colors[colorScheme ?? 'light'].invertColor, backgroundColor: Colors[colorScheme ?? 'light'].lighterColor, height: 50, borderRadius: 28, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginVertical: 30, elevation: 5 }}>
+            <ThemedText style={{ fontWeight: 'bold', fontSize: 18,  }}>Upload</ThemedText>
           </View>
         </TouchableOpacity>
       </ScrollView>

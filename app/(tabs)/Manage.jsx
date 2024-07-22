@@ -1,11 +1,10 @@
-import { StyleSheet, Image, View, Text, ScrollView, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ScrollView, FlatList, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ManageItemCard from '../../components/ManageItemCard';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useEffect, useState } from 'react';
 import { FIREBASE_DB } from '../../FirebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
 
@@ -24,7 +23,6 @@ export default function Manage() {
       console.error('Error fetching data: ', error);
     });
 
-    // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -40,12 +38,13 @@ export default function Manage() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <ManageItemCard
-            id={item.id}
+              id={item.id}
               title={item.itemName}
               category={item.itemCategory}
               img={item.imageURL}
               price={item.price}
               imageFileName={item.imageFileName}
+              visible={item.visible}
             />
           )}
         />

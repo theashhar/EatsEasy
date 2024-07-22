@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, View, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/ThemedText';
 import MyHeader from '../../components/MyHeader';
 import SearchBar from '../../components/SearchBar';
 import ItemCard from '../../components/ItemCard';
 import { FIREBASE_DB } from '../../FirebaseConfig';
-import { collection, onSnapshot, getDoc } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export default function HomeScreen() {
   const [items, setItems] = useState([]);
   const numColumns = 2;
-  //better Method
+
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(FIREBASE_DB, 'FoodItems'), (querySnapshot) => {
       const fetchedItems = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      }));
+      })).filter(item => item.visible); // Filter items to include only those with visible: true
       setItems(fetchedItems);
     }, (error) => {
       console.error('Error fetching data: ', error);
@@ -26,21 +26,6 @@ export default function HomeScreen() {
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
-
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(collection(FIREBASE_DB, 'FoodItems'), (querySnapshot) => {
-  //     const fetchedItems = querySnapshot.docs.map(doc => ({
-  //       id: doc.id,
-  //       ...doc.data()
-  //     }));
-  //     setItems(fetchedItems);
-  //   }, (error) => {
-  //     console.error('Error fetching data: ', error);
-  //   });
-
-  //   // Clean up the listener when the component unmounts
-  //   return () => unsubscribe();
-  // }, []);
 
   return (
     <SafeAreaView style={{ marginBottom: 80 }}>
