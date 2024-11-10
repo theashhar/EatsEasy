@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "FoodManager",
-    "slug": "FoodManager",
-    "version": "1.0.0",
+    "name": "EatsEasy",
+    "slug": "EatsEasy",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",

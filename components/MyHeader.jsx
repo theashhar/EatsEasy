@@ -14,8 +14,8 @@ export default function MyHeader() {
 <View style={GlobalStyles.bar}>
         <View>
             <Image
-              source={require('../assets/images/FMLogo.png')}
-              style={{ width: 140, height: 45, resizeMode: 'contain' }}
+              source={require('../assets/images/EELogo.png')}
+              style={{ width: 150, height: 45, resizeMode: 'contain' }}
             />
         </View>
         <View style={GlobalStyles.notificationPanel}>

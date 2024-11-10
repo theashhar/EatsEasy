@@ -10,6 +10,7 @@ export default function TabLayout() {
 
   return (
     <Tabs 
+    initialRouteName="index" // Set the initial route here
       screenOptions={{
         //way to use colors from Colors.ts
         tabBarShowLabel: false, // Hide the labels
@@ -39,6 +40,15 @@ export default function TabLayout() {
           ),
         }}
       />
+        <Tabs.Screen
+          name="ExploreRestaurants"
+          options={{
+            title: 'ExploreRestaurants',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'store-search' : 'store-search-outline'} color={color} />
+            ),
+          }}
+        />
       <Tabs.Screen
         name="AddItem"
         options={{
@@ -57,6 +67,7 @@ export default function TabLayout() {
           ),
         }}
       />
+
     </Tabs>
   );
 }

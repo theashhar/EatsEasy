@@ -1,16 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-// import firebaseConfig from './firebaseCerdentials.js'
-import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID } from '@env';
+// import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID } from '@env';
 
 const firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: AUTH_DOMAIN,
-  projectId: PROJECT_ID,
-  storageBucket: STORAGE_BUCKET,
-  messagingSenderId: MESSAGING_SENDER_ID,
-  appId: APP_ID
+  apiKey: 'AIzaSyDbJifX4pCJiiq8j6QPFTRFMk9e',
+  authDomain: 'foodmanager-28c71.firebaseapp.com',
+  projectId: 'foodmanager-28c71',
+  storageBucket: 'foodmanager-28c71.appspot.com',
+  messagingSenderId: '106499636739',
+  appId: '1:106499636739:web:4ebaa6b8f8465ab6fd9836'
 };
 
 // Initialize Firebase
