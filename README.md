@@ -1,50 +1,80 @@
-# Welcome to your Expo app 👋
+# 🍽️ Restaurant Finder App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a **React Native Expo** app that integrates with **Firebase** and the **Yelp API**. The app allows users to search for restaurants, list food items, and manage food items with functionalities like delete, deactivate, and more.
 
-## Get started
+## 📱 Features
 
-1. Install dependencies
+- 🔍 **Restaurant Search**: Search for restaurants using the Yelp API.
+- 📝 **List Food Items**: View and add food items for selected restaurants.
+- 🗑️ **Manage Food Items**: Delete or deactivate food items.
+- 🔐 **Authentication**: User authentication using Firebase.
 
-   ```bash
-   npm install
-   ```
+## 🛠️ Tech Stack
 
-2. Start the app
+- **React Native (Expo)**
+- **Firebase** (Authentication, Storage & Firestore)
+- **Yelp API** (Restaurant data)
 
-   ```bash
+## 🚀 Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js**: [Download here](https://nodejs.org/)
+- **Expo CLI**: Install via `npm install -g expo-cli`
+- **Firebase Account**: [Sign up here](https://firebase.google.com/)
+- **Yelp API Key**: [Get your key here](https://www.yelp.com/developers/documentation/v3/get_started)
+
+### 🔧 Installation
+
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/theashhar/EatsEasy.git
+    cd EatsEasy
+    ```
+
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3. **Start the Expo server**:
+    ```bash
     npx expo start
-   ```
+    ```
 
-In the output, you'll find options to open the app in a
+4. **Run the app**:
+    - Use the Expo Go app on your phone to scan the QR code.
+    - Alternatively, press `a` to run on Android emulator or `i` for iOS simulator.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📂 Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Below is a visual representation of the project's file structure using a dependency graph:
 
-## Get a fresh project
+![Dependency Graph](./dependency-graph.svg)
 
-When you're ready, run:
+## 🔑 Firebase Setup
 
-```bash
-npm run reset-project
-```
+1. Go to the [Firebase Console](https://console.firebase.google.com/).
+2. Create a new project and add a Web app.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🗒️ Yelp API Setup
 
-## Learn more
+1. Go to the [Yelp Developers Portal](https://www.yelp.com/developers/v3/manage_app).
+2. Create an app to get your API key.
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🤝 Contributing
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Contributions are welcome! Please fork this repository and submit a pull request for any improvements.
 
-## Join the community
+## 📄 License
 
-Join our community of developers creating universal apps.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📧 Contact
+
+For any questions or feedback, feel free to reach out:
+
+- **Email**: theashhar.work@gmail.com
+- **Twitter**: (https://x.com/the_ashhar)
